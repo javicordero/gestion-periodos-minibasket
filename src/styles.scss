@@ -1,4 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  background: #222831; /* fallback for old browsers */
+  width: 65%;
+  margin: auto;
+
+  @media (max-width: 600px) {
+    width: 90%;
+  }
+}

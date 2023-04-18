@@ -12,7 +12,7 @@ export class ConvocadosListComponent implements OnInit {
 
   players: Player[] = [];
   ngOnInit(): void {
-    this.playersService.playersConvocados$.subscribe(
+    this.playersService.allPlayers$.subscribe(
       (players) => (this.players = players)
     );
   }

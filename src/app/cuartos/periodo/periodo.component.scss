@@ -4,6 +4,7 @@
 
 .multiselect-container {
   height: 41px;
+  color: #eeeeee;
 }
 
 .player-container {
@@ -64,15 +65,31 @@
 
 // Estilos del multiselect de búsqueda
 ::ng-deep {
+  .dropdown-list {
+    background-color: #eeeeee !important;
+  }
+
   .dropdown-list .filter-textbox input {
     width: 90% !important;
     padding: 0 !important;
+    background-color: #eeeeee;
   }
 
   .multiselect-dropdown .dropdown-btn {
     // padding: 6px 0 !important;
     width: 125px !important;
     height: 27px !important;
+    border-color: #eeeeee !important;
+  }
+
+  .multiselect-item-checkbox input + div:before {
+    background: #00adb5 !important;
+    border-color: #393e46 !important;
+  }
+
+  .multiselect-item-checkbox input:checked + div:before {
+    background: #393e46 !important;
+    border-color: #222831 !important;
   }
 
   .selected-item-container {
