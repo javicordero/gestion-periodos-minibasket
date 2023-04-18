@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Game, Period, Player } from 'src/app/models/models.model';
 import { GameService } from 'src/app/services/game.service';
 import { PlayersService } from 'src/app/services/players.service';
-
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 @Component({
   selector: 'app-periodo',
   templateUrl: './periodo.component.html',
@@ -23,7 +23,7 @@ export class PeriodoComponent implements OnInit {
   playersSelected: Player[] = [];
   playersSeleccionables: Player[] = [];
   dropdownList: any = [];
-  dropdownSettings = {};
+  dropdownSettings: IDropdownSettings = {};
 
   constructor(
     private playersService: PlayersService,
@@ -31,7 +31,7 @@ export class PeriodoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.playersService.playersConvocados$.subscribe((players) => {
+    this.playersService.allPlayers$.subscribe((players) => {
       this.playersSeleccionables = players;
       this.dropdownList = [];
       this.playersSeleccionables.map((player) => {
@@ -51,6 +51,7 @@ export class PeriodoComponent implements OnInit {
       itemsShowLimit: 5,
       limitSelection: 5,
       allowSearchFilter: true,
+      searchPlaceholderText: 'Buscar',
     };
   }
 
