@@ -1,0 +1,40 @@
+<article class="cuartos-container">
+  <header class="multiselect-container">
+    <ng-multiselect-dropdown
+      [placeholder]="'Periodo ' + periodNumber"
+      [settings]="dropdownSettings"
+      [data]="dropdownList"
+      [(ngModel)]="playersSelected"
+      (onSelect)="onItemSelect($event)"
+      (onDeSelect)="onItemSelect($event)"
+      (onDropDownClose)="onDropDownClose($event)"
+    >
+    </ng-multiselect-dropdown>
+    <span class="multiselect-custom-label" *ngIf="playersSelected.length > 0"
+      >Periodo {{ periodNumber }}</span
+    >
+  </header>
+
+  <div class="player-container">
+    <div
+      cdkDropList
+      #todoList="cdkDropList"
+      [cdkDropListData]="playersSelected"
+      class="player-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div class="player-box" *ngFor="let player of playersSelected" cdkDrag>
+        <span
+          class="player-box-box"
+          [ngClass]="{
+            'player-box-1period ': countPlayerNumberOfPeriods(player.id) === 1,
+            'player-box-2periods': countPlayerNumberOfPeriods(player.id) === 2,
+            'player-box-3periods': countPlayerNumberOfPeriods(player.id) === 3
+          }"
+        >
+          {{ player.name }}
+        </span>
+      </div>
+    </div>
+  </div>
+</article>

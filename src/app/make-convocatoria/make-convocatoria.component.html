@@ -1,0 +1,55 @@
+<section class="convocatoria-container">
+  <article class="player-container">
+    <header>
+      <h2>Jugadores</h2>
+    </header>
+    <div
+      cdkDropList
+      #allPlayersList="cdkDropList"
+      [cdkDropListData]="allPlayers"
+      [cdkDropListConnectedTo]="[playersConvocadosList]"
+      class="player-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div class="player-box" *ngFor="let player of allPlayers" cdkDrag>
+        {{ player.name }}
+        <button (click)="deletePlayer(player)">
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="delete"
+          ></mat-icon>
+        </button>
+      </div>
+      <footer class="player-box">
+        <input
+          type="text"
+          [formControl]="newPlayer"
+          placeholder="Añadir jugador"
+          (blur)="addPlayer()"
+        />
+      </footer>
+    </div>
+  </article>
+
+  <article class="player-container">
+    <header>
+      <h2>Convocados ({{ playersConvocados.length }})</h2>
+    </header>
+    <div
+      cdkDropList
+      #playersConvocadosList="cdkDropList"
+      [cdkDropListData]="playersConvocados"
+      [cdkDropListConnectedTo]="[allPlayersList]"
+      class="player-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <p class="player-box-label" *ngIf="playersConvocados.length === 0">
+        Arrastra aquí los jugadores para convocarlos
+      </p>
+      <div class="player-box" *ngFor="let player of playersConvocados" cdkDrag>
+        {{ player.name }}
+      </div>
+    </div>
+  </article>
+</section>

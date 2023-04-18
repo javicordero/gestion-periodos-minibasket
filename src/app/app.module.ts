@@ -3,16 +3,26 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MakeConvocatoriaModule } from './make-convocatoria/make-convocatoria.module';
+import { CuartosModule } from './cuartos/cuartos.module';
+import { ConvocadosListComponent } from './convocados-list/convocados-list.component';
+import { OpenColoseConvocatoriaButtonComponent } from './open-close-convocatoria-button/open-close-convocatoria-button.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ConvocadosListComponent,
+    OpenColoseConvocatoriaButtonComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MakeConvocatoriaModule,
+    CuartosModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
