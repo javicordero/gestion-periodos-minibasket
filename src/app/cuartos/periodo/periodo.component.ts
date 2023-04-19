@@ -52,8 +52,9 @@ export class PeriodoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.playersService.allPlayers$.subscribe((players) => {
+    this.playersService.playersConvocados$.subscribe((players) => {
       this.dropdownList = players;
+      this.dropdownList.sort(this.orderAlfabetico);
     });
 
     this.gameService.game$.subscribe((game) => {
@@ -112,5 +113,15 @@ export class PeriodoComponent implements OnInit {
       });
     });
     return count;
+  }
+
+  orderAlfabetico(a: Player, b: Player) {
+    if (a.name.toLowerCase() < b.name.toLowerCase()) {
+      return -1;
+    }
+    if (a.name.toLowerCase() > b.name.toLowerCase()) {
+      return 1;
+    }
+    return 0;
   }
 }
