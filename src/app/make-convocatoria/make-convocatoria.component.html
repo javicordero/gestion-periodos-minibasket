@@ -27,6 +27,7 @@
           [formControl]="newPlayer"
           placeholder="Añadir jugador"
           (blur)="addPlayer()"
+          (keyup.enter)="addPlayer()"
         />
       </footer>
     </div>
