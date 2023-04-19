@@ -39,6 +39,17 @@
   font-size: 14px;
 }
 
+.player-box-box {
+  padding: 10px 5px;
+  width: 100%;
+  height: 100%;
+  font-weight: bold;
+
+  @media (max-width: 600px) {
+    padding: 5px;
+  }
+}
+
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;
@@ -105,13 +116,6 @@
 $bg1period: green;
 $bg2periods: blue;
 $bg3periods: orange;
-
-.player-box-box {
-  padding: 10px 5px;
-  width: 100%;
-  height: 100%;
-  font-weight: bold;
-}
 
 .player-box-1period {
   color: $bg1period;
