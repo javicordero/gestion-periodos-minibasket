@@ -4,10 +4,9 @@
       [placeholder]="'Periodo ' + periodNumber"
       [settings]="dropdownSettings"
       [data]="dropdownList"
-      [(ngModel)]="playersSelected"
+      [formControl]="selectedPlayersControl"
       (onSelect)="onItemSelect($event)"
-      (onDeSelect)="onItemSelect($event)"
-      (onDropDownClose)="onDropDownClose($event)"
+      (onDeSelect)="onItemDeSelect($event)"
     >
     </ng-multiselect-dropdown>
     <span class="multiselect-custom-label" *ngIf="playersSelected.length > 0"
@@ -18,8 +17,9 @@
   <div class="player-container">
     <div
       cdkDropList
-      #todoList="cdkDropList"
+      id="period-{{ periodNumber }}"
       [cdkDropListData]="playersSelected"
+      [cdkDropListConnectedTo]="conectedTo"
       class="player-list"
       (cdkDropListDropped)="drop($event)"
     >

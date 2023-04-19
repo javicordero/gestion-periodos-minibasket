@@ -7,21 +7,21 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class PlayersService {
   private allPlayersSubject: BehaviorSubject<Player[]> = new BehaviorSubject([
-    { id: '1', name: 'Juan' },
-    { id: '2', name: 'Darío' },
-    { id: '3', name: 'Isaac' },
-    { id: '4', name: 'Adri Mora' },
-    { id: '5', name: 'Adri González' },
-    { id: '6', name: 'Juan Palma' },
-    { id: '7', name: 'Gonzalo' },
-    { id: '8', name: 'Sergio' },
-    { id: '9', name: 'Vélez' },
-    { id: '10', name: 'Pipa' },
-    { id: '11', name: 'Stefano' },
-    { id: '12', name: 'Ale' },
-    // { id: '13', name: 'Julio' },
-    // { id: '14', name: 'Rome' },
-    // { id: '15', name: 'Carlos' },
+    { id: '1', name: 'Adri González' },
+    { id: '2', name: 'Isaac' },
+    { id: '3', name: 'Juanma' },
+    { id: '4', name: 'Paco' },
+    { id: '5', name: 'Alberto' },
+    { id: '6', name: 'Javier' },
+    { id: '7', name: 'Raúl' },
+    { id: '8', name: 'Ismael' },
+    { id: '9', name: 'Adri Mora' },
+    { id: '10', name: 'Iker' },
+    { id: '11', name: 'Darío' },
+    { id: '12', name: 'Juan Palma' },
+    { id: '13', name: 'Guillermo' },
+    { id: '14', name: 'Quiñones' },
+    { id: '15', name: 'Miguel Ángel' },
   ] as Player[]);
 
   public readonly allPlayers$: Observable<Player[]> =

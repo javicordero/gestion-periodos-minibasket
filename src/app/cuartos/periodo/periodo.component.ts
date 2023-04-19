@@ -1,9 +1,14 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit } from '@angular/core';
 import { Game, Period, Player } from 'src/app/models/models.model';
 import { GameService } from 'src/app/services/game.service';
 import { PlayersService } from 'src/app/services/players.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-periodo',
   templateUrl: './periodo.component.html',
@@ -15,34 +20,19 @@ export class PeriodoComponent implements OnInit {
     id: '',
     periods: [],
   };
-  period: Period = {
-    id: this.periodNumber,
-    players: [],
-  };
 
-  playersSelected: Player[] = [];
-  playersSeleccionables: Player[] = [];
+  conectedTo: string[] = [];
+
   dropdownList: any = [];
   dropdownSettings: IDropdownSettings = {};
+
+  playersSelected: Player[] = [];
+  selectedPlayersControl: FormControl = new FormControl<Player | null>(null);
 
   constructor(
     private playersService: PlayersService,
     private gameService: GameService
-  ) {}
-
-  ngOnInit(): void {
-    this.playersService.allPlayers$.subscribe((players) => {
-      this.playersSeleccionables = players;
-      this.dropdownList = [];
-      this.playersSeleccionables.map((player) => {
-        this.dropdownList.push(player);
-      });
-    });
-
-    this.gameService.game$.subscribe((game) => {
-      this.game = game;
-    });
-
+  ) {
     this.dropdownSettings = {
       singleSelection: false,
       enableCheckAll: false,
@@ -53,22 +43,63 @@ export class PeriodoComponent implements OnInit {
       allowSearchFilter: true,
       searchPlaceholderText: 'Buscar',
     };
+
+    for (let i: number = 1; i <= 6; i++) {
+      if (this.periodNumber !== i) {
+        this.conectedTo.push(`${'period-' + i}`);
+      }
+    }
+  }
+
+  ngOnInit(): void {
+    this.playersService.allPlayers$.subscribe((players) => {
+      this.dropdownList = players;
+    });
+
+    this.gameService.game$.subscribe((game) => {
+      this.game = game;
+      this.selectedPlayersControl.setValue(
+        this.game.periods.find((period) => period.id === this.periodNumber)!
+          .players
+      );
+      this.playersSelected = this.selectedPlayersControl.value;
+    });
   }
 
   drop(event: CdkDragDrop<Player[]>) {
-    moveItemInArray(
-      event.container.data,
-      event.previousIndex,
-      event.currentIndex
-    );
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else {
+      let previousPeriodId: number = parseInt(
+        event.previousContainer.id.slice(-1)
+      );
+      let nextPeriodId: number = parseInt(event.container.id.slice(-1));
+      let player: Player = this.game.periods.find(
+        (period) => period.id === previousPeriodId
+      )!.players[event.previousIndex];
+      if (
+        this.gameService.playerExistsInPeriod(nextPeriodId, player) ||
+        this.game.periods.find((period) => period.id === nextPeriodId)!.players
+          .length >= 5
+      ) {
+        return;
+      }
+
+      this.gameService.deletePlayerFromPeriod(previousPeriodId, player);
+      this.gameService.addPlayerToPeriod(nextPeriodId, player);
+    }
   }
 
   onItemSelect(item: any) {
-    this.period.players = this.playersSelected;
+    this.gameService.addPlayerToPeriod(this.periodNumber, item);
+  }
 
-    this.game.periods[this.periodNumber - 1].players = this.period.players;
-
-    this.gameService.update(this.game);
+  onItemDeSelect(item: any) {
+    this.gameService.deletePlayerFromPeriod(this.periodNumber, item);
   }
 
   countPlayerNumberOfPeriods(playerId: string): number {
@@ -81,9 +112,5 @@ export class PeriodoComponent implements OnInit {
       });
     });
     return count;
-  }
-
-  onDropDownClose(event: any) {
-    // console.log('onDropDownClose', event);
   }
 }

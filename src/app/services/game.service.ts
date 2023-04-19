@@ -52,22 +52,28 @@ export class GameService {
 
   public readonly game$: Observable<Game> = this.gameSubject.asObservable();
 
-  public update(game: Game): void {
-    this.gameSubject.next(game);
+  public playerExistsInPeriod(periodId: number, player: Player) {
+    return this.gameSubject
+      .getValue()
+      .periods[periodId - 1].players.some((p) => p.id === player.id);
   }
 
-  public countPlayerNumberOfPeriods(playerId: string) {
-    let playerIdd = '1';
-    let count: number = 0;
-    this.gameSubject.getValue().periods.map((period) => {
-      period.players.map((player) => {
-        if (player.id === playerIdd) {
-          count++;
-        }
-      });
-    });
+  public deletePlayerFromPeriod(periodId: number, player: Player) {
+    this.gameSubject
+      .getValue()
+      .periods.find((period: Period) => period.id === periodId)!.players =
+      this.gameSubject.value.periods
+        .find((period: Period) => period.id === periodId)!
+        .players.filter((p) => p.id !== player.id);
+    this.gameSubject.next(this.gameSubject.getValue());
+  }
 
-    console.log(count);
+  public addPlayerToPeriod(periodId: number, player: Player) {
+    this.gameSubject.value.periods
+      .filter((period: Period) => period.id === periodId)[0]
+      .players.push(player);
+
+    this.gameSubject.next(this.gameSubject.getValue());
   }
 
   constructor() {}
