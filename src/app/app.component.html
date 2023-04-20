@@ -4,7 +4,7 @@
       convocatoriaOpen
         ? 'Cerrar convocatoria'
         : 'Editar
-    convocatoria'
+      convocatoria'
     "
     (toggleConvocatoriaEvent)="toggleConvocatoria()"
   >
@@ -14,3 +14,7 @@
 <app-convocados-list *ngIf="!convocatoriaOpen"></app-convocados-list>
 
 <app-cuartos *ngIf="!convocatoriaOpen"></app-cuartos>
+
+<div class="footer-container">
+  <app-footer></app-footer>
+</div>

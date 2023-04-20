@@ -1,0 +1,15 @@
+footer {
+  color: #eeeeee;
+  padding: 15px;
+  text-align: center;
+}
+
+.social-media-icons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+  a {
+    color: inherit;
+  }
+}

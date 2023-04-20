@@ -9,12 +9,15 @@ import { MakeConvocatoriaModule } from './make-convocatoria/make-convocatoria.mo
 import { CuartosModule } from './cuartos/cuartos.module';
 import { ConvocadosListComponent } from './convocados-list/convocados-list.component';
 import { OpenColoseConvocatoriaButtonComponent } from './open-close-convocatoria-button/open-close-convocatoria-button.component';
+import { FooterComponent } from './footer/footer.component';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 @NgModule({
   declarations: [
     AppComponent,
     ConvocadosListComponent,
     OpenColoseConvocatoriaButtonComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
@@ -23,6 +26,7 @@ import { OpenColoseConvocatoriaButtonComponent } from './open-close-convocatoria
     MakeConvocatoriaModule,
     CuartosModule,
     HttpClientModule,
+    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
