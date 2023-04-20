@@ -103,7 +103,7 @@ export class PeriodoComponent implements OnInit {
     this.gameService.deletePlayerFromPeriod(this.periodNumber, item);
   }
 
-  countPlayerNumberOfPeriods(playerId: string): number {
+  countPlayerNumberOfPeriods(playerId: string | undefined): number {
     let count: number = 0;
     this.game.periods.map((period) => {
       period.players.map((player) => {

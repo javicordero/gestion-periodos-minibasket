@@ -14,9 +14,8 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./make-convocatoria.component.scss'],
 })
 export class MakeConvocatoriaComponent implements OnInit {
-  allPlayers: Player[] = [];
+  players: Player[] = [];
   playersConvocados: Player[] = [];
-  playersCuarto1: Player[] = [];
 
   newPlayer: FormControl = new FormControl('');
 
@@ -24,12 +23,11 @@ export class MakeConvocatoriaComponent implements OnInit {
 
   ngOnInit(): void {
     this.playersService.allPlayers$.subscribe((allPlayers) => {
-      this.allPlayers = allPlayers;
-      // LLamar al servicio para guardarlo en la base de datos
-    });
-    this.playersService.playersConvocados$.subscribe((playersConvocados) => {
-      this.playersConvocados = playersConvocados;
-      // LLamar al servicio para guardarlo en la base de datos
+      this.players = allPlayers.filter((player) => player.convocado === false);
+      this.playersConvocados = allPlayers.filter(
+        (player) => player.convocado === true
+      );
+      this.playersService.updatePlayersConvocados(this.playersConvocados);
     });
   }
 
@@ -54,8 +52,9 @@ export class MakeConvocatoriaComponent implements OnInit {
         event.previousIndex,
         event.currentIndex
       );
-      this.playersService.updateAllPlayers(this.allPlayers);
-      this.playersService.updatePlayersConvocados(this.playersConvocados);
+
+      const player = event.container.data[event.currentIndex];
+      this.playersService.convocarDesconvocarPlayer(player);
     }
   }
 
@@ -64,10 +63,9 @@ export class MakeConvocatoriaComponent implements OnInit {
   addPlayer() {
     if (this.newPlayer.value !== '') {
       const newPlayer = {
-        id: (this.allPlayers.length + 1).toString(),
         name: this.newPlayer.value,
       };
-      this.playersService.addPlayer(newPlayer);
+      this.playersService.createPlayer(newPlayer);
       this.newPlayer.setValue('');
     }
   }
