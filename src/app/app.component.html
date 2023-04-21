@@ -1,20 +1,21 @@
-<div class="convocatoria-button-container">
-  <app-open-close-convocatoria-button
-    [buttonText]="
-      convocatoriaOpen
-        ? 'Cerrar convocatoria'
-        : 'Editar
-      convocatoria'
-    "
-    (toggleConvocatoriaEvent)="toggleConvocatoria()"
-  >
-  </app-open-close-convocatoria-button>
-</div>
-<app-make-convocatoria *ngIf="convocatoriaOpen"></app-make-convocatoria>
-<app-convocados-list *ngIf="!convocatoriaOpen"></app-convocados-list>
+<div class="wrapper">
+  <main class="content">
+    <div class="convocatoria-button-container">
+      <app-open-close-convocatoria-button
+        [buttonText]="
+          convocatoriaOpen ? 'Cerrar convocatoria' : 'Editar convocatoria'
+        "
+        (toggleConvocatoriaEvent)="toggleConvocatoria()"
+      >
+      </app-open-close-convocatoria-button>
+    </div>
+    <app-make-convocatoria *ngIf="convocatoriaOpen"></app-make-convocatoria>
+    <app-convocados-list *ngIf="!convocatoriaOpen"></app-convocados-list>
 
-<app-cuartos *ngIf="!convocatoriaOpen"></app-cuartos>
+    <app-cuartos *ngIf="!convocatoriaOpen"></app-cuartos>
+  </main>
 
-<div class="footer-container">
-  <app-footer></app-footer>
+  <footer>
+    <app-footer></app-footer>
+  </footer>
 </div>
