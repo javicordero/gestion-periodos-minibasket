@@ -36,7 +36,7 @@ export class PeriodoComponent implements OnInit {
     this.dropdownSettings = {
       singleSelection: false,
       enableCheckAll: false,
-      idField: 'id',
+      idField: '_id',
       textField: 'name',
       itemsShowLimit: 5,
       limitSelection: 5,
