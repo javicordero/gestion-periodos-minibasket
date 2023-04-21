@@ -13,13 +13,25 @@
     >
       <div class="player-box" *ngFor="let player of players" cdkDrag>
         {{ player.name }}
-        <button (click)="deletePlayer(player)">
-          <mat-icon
-            aria-hidden="false"
-            aria-label="Example home icon"
-            fontIcon="delete"
-          ></mat-icon>
-        </button>
+
+        <div class="player-box-inputs">
+          <div class="player-box-number-input">
+            <input
+              type="text"
+              [value]="player.number ? player.number : ''"
+              [id]="'number-input-' + player._id"
+              (keyup.enter)="changePlayerNumber(player)"
+              (blur)="changePlayerNumber(player)"
+            />
+          </div>
+          <button (click)="deletePlayer(player)">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="delete"
+            ></mat-icon>
+          </button>
+        </div>
       </div>
       <footer class="player-box">
         <input
@@ -48,8 +60,13 @@
       <p class="player-box-label" *ngIf="playersConvocados.length === 0">
         Arrastra aquí los jugadores para convocarlos
       </p>
-      <div class="player-box" *ngFor="let player of playersConvocados" cdkDrag>
-        {{ player.name }}
+      <div
+        class="player-box player-box-convocados-list"
+        *ngFor="let player of playersConvocados"
+        cdkDrag
+      >
+        <span>{{ player.name }}</span>
+        <span>{{ player.number }}</span>
       </div>
     </div>
   </article>

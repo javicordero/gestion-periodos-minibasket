@@ -50,12 +50,30 @@
   outline: none;
 }
 
+.player-box-inputs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 40px;
+}
+
+.player-box-number-input {
+  width: 20px;
+  input {
+    outline: auto;
+    outline-color: #393e46 !important;
+    text-align: center;
+  }
+}
+
 .player-box button {
   background-color: transparent;
   border: none;
   color: #393e46;
   padding: 0;
   font-size: 5px;
+  position: relative;
+  bottom: 2px;
 
   .mat-icon {
     justify-content: center;

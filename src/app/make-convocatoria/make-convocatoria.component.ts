@@ -73,4 +73,12 @@ export class MakeConvocatoriaComponent implements OnInit {
   deletePlayer(player: Player) {
     this.playersService.deletePlayer(player);
   }
+
+  changePlayerNumber(player: Player) {
+    const value = (<HTMLInputElement>(
+      document.getElementById(`number-input-${player._id}`)
+    )).value;
+
+    this.playersService.changePlayerNumber(player, value);
+  }
 }

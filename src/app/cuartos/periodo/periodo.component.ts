@@ -23,7 +23,7 @@ export class PeriodoComponent implements OnInit {
 
   conectedTo: string[] = [];
 
-  dropdownList: any = [];
+  dropdownList: any[] = [];
   dropdownSettings: IDropdownSettings = {};
 
   playersSelected: Player[] = [];
@@ -123,5 +123,12 @@ export class PeriodoComponent implements OnInit {
       return 1;
     }
     return 0;
+  }
+
+  getPlayerNumber(playerId: string | undefined) {
+    const list: Player[] = this.dropdownList.filter(
+      (player) => player._id === playerId
+    );
+    return list[0].number;
   }
 }

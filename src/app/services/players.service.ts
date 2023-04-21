@@ -65,4 +65,9 @@ export class PlayersService {
         this.getPlayers();
       });
   }
+
+  public changePlayerNumber(player: Player, number: string): void {
+    player.number = number;
+    this.updatePlayer(player);
+  }
 }

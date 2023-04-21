@@ -25,7 +25,7 @@
     >
       <div class="player-box" *ngFor="let player of playersSelected" cdkDrag>
         <span
-          class="player-box-box"
+          class="player-box-name"
           [ngClass]="{
             'player-box-1period ': countPlayerNumberOfPeriods(player._id) === 1,
             'player-box-2periods': countPlayerNumberOfPeriods(player._id) === 2,
@@ -34,6 +34,7 @@
         >
           {{ player.name }}
         </span>
+        <span class="player-box-number">{{ getPlayerNumber(player._id) }}</span>
       </div>
     </div>
   </div>
