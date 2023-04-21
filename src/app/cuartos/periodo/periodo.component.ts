@@ -107,7 +107,7 @@ export class PeriodoComponent implements OnInit {
     let count: number = 0;
     this.game.periods.map((period) => {
       period.players.map((player) => {
-        if (player.id === playerId) {
+        if (player._id === playerId) {
           count++;
         }
       });

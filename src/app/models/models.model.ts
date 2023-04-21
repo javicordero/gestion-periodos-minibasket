@@ -9,7 +9,7 @@ export interface Period {
 }
 
 export interface Player {
-  id?: string;
+  _id?: string;
   name: string;
   convocado?: boolean;
 }

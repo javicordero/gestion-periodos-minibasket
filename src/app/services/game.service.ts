@@ -55,7 +55,7 @@ export class GameService {
   public playerExistsInPeriod(periodId: number, player: Player) {
     return this.gameSubject
       .getValue()
-      .periods[periodId - 1].players.some((p) => p.id === player.id);
+      .periods[periodId - 1].players.some((p) => p._id === player._id);
   }
 
   public deletePlayerFromPeriod(periodId: number, player: Player) {
@@ -64,7 +64,7 @@ export class GameService {
       .periods.find((period: Period) => period.id === periodId)!.players =
       this.gameSubject.value.periods
         .find((period: Period) => period.id === periodId)!
-        .players.filter((p) => p.id !== player.id);
+        .players.filter((p) => p._id !== player._id);
     this.gameSubject.next(this.gameSubject.getValue());
   }
 

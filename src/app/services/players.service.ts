@@ -48,7 +48,7 @@ export class PlayersService {
   }
 
   public deletePlayer(player: Player) {
-    this.http.delete(`${this.url}/${player.id}`).subscribe((data: any) => {
+    this.http.delete(`${this.url}/${player._id}`).subscribe((data: any) => {
       this.getPlayers();
     });
   }
@@ -60,7 +60,7 @@ export class PlayersService {
 
   public updatePlayer(player: Player) {
     this.http
-      .patch(`${this.url}/${player.id}`, player)
+      .patch(`${this.url}/${player._id}`, player)
       .subscribe((data: any) => {
         this.getPlayers();
       });
