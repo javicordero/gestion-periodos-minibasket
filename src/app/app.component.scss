@@ -17,3 +17,7 @@ footer {
 header {
   margin-bottom: 15px;
 }
+
+::ng-deep .alertify-notifier.ajs-top {
+  top: 40px !important;
+}

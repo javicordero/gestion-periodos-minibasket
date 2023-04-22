@@ -7,6 +7,7 @@ import {
 import { Component, OnInit } from '@angular/core';
 import { Player } from '../models/models.model';
 import { FormControl } from '@angular/forms';
+import { AlertifyService } from '../services/alertify.service';
 
 @Component({
   selector: 'app-make-convocatoria',
@@ -19,7 +20,10 @@ export class MakeConvocatoriaComponent implements OnInit {
 
   newPlayer: FormControl = new FormControl('');
 
-  constructor(private playersService: PlayersService) {}
+  constructor(
+    private playersService: PlayersService,
+    private alertifyService: AlertifyService
+  ) {}
 
   ngOnInit(): void {
     this.playersService.allPlayers$.subscribe((allPlayers) => {
@@ -43,7 +47,7 @@ export class MakeConvocatoriaComponent implements OnInit {
         event.container.id !== 'cdk-drop-list-0' &&
         this.playersConvocados.length >= 12
       ) {
-        this.displayAlert();
+        this.alertifyService.error('Máximo de 12 jugadores');
         return;
       }
       transferArrayItem(
@@ -57,8 +61,6 @@ export class MakeConvocatoriaComponent implements OnInit {
       this.playersService.convocarDesconvocarPlayer(player);
     }
   }
-
-  displayAlert() {}
 
   addPlayer() {
     if (this.newPlayer.value !== '') {

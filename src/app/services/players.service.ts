@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import { Player } from '../models/models.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { AlertifyService } from './alertify.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlayersService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private alertifyService: AlertifyService
+  ) {}
 
   public allPlayersSubject: BehaviorSubject<Player[]> = new BehaviorSubject(
     [] as Player[]
@@ -30,8 +34,8 @@ export class PlayersService {
     this.playersConvocadosSubject.next(players);
   }
 
-  // url: string = 'http://localhost:3000/api/v1/players';
-  url: string = 'https://vast-snaps-tuna.cyclic.app/api/v1/players';
+  url: string = 'http://localhost:3000/api/v1/players';
+  // url: string = 'https://vast-snaps-tuna.cyclic.app/api/v1/players';
 
   public getPlayers() {
     this.http.get<Player[]>(`${this.url}/`, {}).subscribe({
@@ -42,8 +46,9 @@ export class PlayersService {
   }
 
   public createPlayer(player: Player): void {
-    this.http.post<Player>(`${this.url}/`, player).subscribe(() => {
-      this.getPlayers();
+    this.http.post<Player>(`${this.url}/`, player).subscribe({
+      next: (data) => this.getPlayers(),
+      error: (err) => this.alertifyService.error(err.error),
     });
   }
 
