@@ -34,8 +34,8 @@ export class PlayersService {
     this.playersConvocadosSubject.next(players);
   }
 
-  // url: string = 'http://localhost:3000/api/v1/players';
-  url: string = 'https://vast-snaps-tuna.cyclic.app/api/v1/players';
+  url: string = 'http://localhost:3000/api/v1/players';
+  // url: string = 'https://vast-snaps-tuna.cyclic.app/api/v1/players';
 
   public getPlayers() {
     this.http.get<Player[]>(`${this.url}/`, {}).subscribe({
