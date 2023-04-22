@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
     this.playersService.getPlayers();
   }
 
-  toggleConvocatoria() {
-    this.convocatoriaOpen = !this.convocatoriaOpen;
+  toggleConvocatoria(value: boolean): void {
+    this.convocatoriaOpen = value;
   }
 }

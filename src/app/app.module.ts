@@ -12,6 +12,7 @@ import { OpenColoseConvocatoriaButtonComponent } from './open-close-convocatoria
 import { FooterComponent } from './footer/footer.component';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HeaderModule } from './header/header.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,6 +28,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     CuartosModule,
     HttpClientModule,
     FontAwesomeModule,
+    HeaderModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

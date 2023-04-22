@@ -1,17 +1,12 @@
 <div class="wrapper">
-  <main>
-    <div class="convocatoria-button-container">
-      <app-open-close-convocatoria-button
-        [buttonText]="
-          convocatoriaOpen ? 'Cerrar convocatoria' : 'Editar convocatoria'
-        "
-        (toggleConvocatoriaEvent)="toggleConvocatoria()"
-      >
-      </app-open-close-convocatoria-button>
-    </div>
+  <header>
+    <app-header
+      (convocatoriaEventEmitter)="toggleConvocatoria($event)"
+    ></app-header>
+  </header>
+  <main class="wrapper-margin">
     <app-make-convocatoria *ngIf="convocatoriaOpen"></app-make-convocatoria>
     <app-convocados-list *ngIf="!convocatoriaOpen"></app-convocados-list>
-
     <app-cuartos *ngIf="!convocatoriaOpen"></app-cuartos>
   </main>
   <footer>
