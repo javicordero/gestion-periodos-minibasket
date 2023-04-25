@@ -68,10 +68,16 @@ export class GameService {
     this.gameSubject.next(this.gameSubject.getValue());
   }
 
-  public addPlayerToPeriod(periodId: number, player: Player) {
-    this.gameSubject.value.periods
-      .filter((period: Period) => period.id === periodId)[0]
-      .players.push(player);
+  public addPlayerToPeriod(periodId: number, player: Player, order?: number) {
+    if (order !== undefined) {
+      this.gameSubject.value.periods.filter(
+        (period: Period) => period.id === periodId
+      )[0].players[order] = player;
+    } else {
+      this.gameSubject.value.periods
+        .filter((period: Period) => period.id === periodId)[0]
+        .players.push(player);
+    }
 
     this.gameSubject.next(this.gameSubject.getValue());
   }

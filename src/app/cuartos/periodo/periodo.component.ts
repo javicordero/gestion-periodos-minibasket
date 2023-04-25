@@ -9,6 +9,7 @@ import { GameService } from 'src/app/services/game.service';
 import { PlayersService } from 'src/app/services/players.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { FormControl } from '@angular/forms';
+import { AlertifyService } from 'src/app/services/alertify.service';
 @Component({
   selector: 'app-periodo',
   templateUrl: './periodo.component.html',
@@ -31,7 +32,8 @@ export class PeriodoComponent implements OnInit {
 
   constructor(
     private playersService: PlayersService,
-    private gameService: GameService
+    private gameService: GameService,
+    private alertifyService: AlertifyService
   ) {
     this.dropdownSettings = {
       singleSelection: false,
@@ -74,25 +76,56 @@ export class PeriodoComponent implements OnInit {
         event.previousIndex,
         event.currentIndex
       );
-    } else {
-      let previousPeriodId: number = parseInt(
-        event.previousContainer.id.slice(-1)
-      );
-      let nextPeriodId: number = parseInt(event.container.id.slice(-1));
-      let player: Player = this.game.periods.find(
-        (period) => period.id === previousPeriodId
-      )!.players[event.previousIndex];
-      if (
-        this.gameService.playerExistsInPeriod(nextPeriodId, player) ||
-        this.game.periods.find((period) => period.id === nextPeriodId)!.players
-          .length >= 5
-      ) {
-        return;
-      }
-
-      this.gameService.deletePlayerFromPeriod(previousPeriodId, player);
-      this.gameService.addPlayerToPeriod(nextPeriodId, player);
+      return;
     }
+
+    let previousPeriodId: number = parseInt(
+      event.previousContainer.id.slice(-1)
+    );
+    let nextPeriodId: number = parseInt(event.container.id.slice(-1));
+
+    let previousPlayer: Player = this.game.periods.find(
+      (period) => period.id === previousPeriodId
+    )!.players[event.previousIndex];
+    let nextPlayer =
+      this.game.periods[nextPeriodId - 1].players[event.currentIndex];
+    console.log('aa');
+    if (
+      this.gameService.playerExistsInPeriod(nextPeriodId, previousPlayer) ||
+      (nextPlayer &&
+        this.gameService.playerExistsInPeriod(previousPeriodId, nextPlayer))
+    ) {
+      this.alertifyService.error('El jugador ya existe en este periodo');
+      return;
+    }
+    if (
+      !nextPlayer &&
+      this.game.periods.find((period) => period.id === nextPeriodId)!.players
+        .length >= 5
+    ) {
+      this.alertifyService.error('El periodo ya está lleno');
+      return;
+    }
+
+    // Coge el del primero y lo mete al segundo
+    this.gameService.addPlayerToPeriod(
+      nextPeriodId,
+      previousPlayer,
+      event.currentIndex
+    );
+    if (nextPlayer) {
+      this.gameService.deletePlayerFromPeriod(nextPeriodId, nextPlayer);
+    }
+
+    // Coge al del segundo y lo mete al prinmero
+    if (nextPlayer) {
+      this.gameService.addPlayerToPeriod(
+        previousPeriodId,
+        nextPlayer,
+        event.previousIndex
+      );
+    }
+    this.gameService.deletePlayerFromPeriod(previousPeriodId, previousPlayer);
   }
 
   onItemSelect(item: any) {
