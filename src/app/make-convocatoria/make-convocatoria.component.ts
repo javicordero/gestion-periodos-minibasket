@@ -50,6 +50,13 @@ export class MakeConvocatoriaComponent implements OnInit {
         this.alertifyService.error('Máximo de 12 jugadores');
         return;
       }
+      if (
+        !event.previousContainer.data[event.previousIndex].convocado &&
+        !event.previousContainer.data[event.previousIndex].number
+      ) {
+        this.alertifyService.error('Asigna un número al jugador');
+        return;
+      }
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
