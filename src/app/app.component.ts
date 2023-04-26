@@ -15,8 +15,4 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.playersService.getPlayers();
   }
-
-  toggleConvocatoria(value: boolean): void {
-    this.convocatoriaOpen = value;
-  }
 }

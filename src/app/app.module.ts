@@ -15,6 +15,7 @@ import { LoadingInterceptor } from './loading.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { GameModule } from './game/game.module';
+import { LoginModule } from './login/login.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { GameModule } from './game/game.module';
     HttpClientModule,
     FontAwesomeModule,
     HeaderModule,
+    LoginModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }],
