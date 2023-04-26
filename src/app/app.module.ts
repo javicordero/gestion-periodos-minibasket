@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,12 +13,17 @@ import { FooterComponent } from './footer/footer.component';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HeaderModule } from './header/header.module';
+import { LoadingInterceptor } from './loading.interceptor';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { SpinnerComponent } from './spinner/spinner.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     ConvocadosListComponent,
     OpenColoseConvocatoriaButtonComponent,
     FooterComponent,
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,8 +34,9 @@ import { HeaderModule } from './header/header.module';
     HttpClientModule,
     FontAwesomeModule,
     HeaderModule,
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
