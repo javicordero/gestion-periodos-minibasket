@@ -1110,6 +1110,9 @@ Public License instead of this License.  But first, please read
 ng-multiselect-dropdown
 MIT
 
+ngx-spinner
+MIT
+
 rxjs
 Apache-2.0
                                Apache License
