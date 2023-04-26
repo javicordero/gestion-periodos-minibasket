@@ -13,4 +13,5 @@ export interface Player {
   name: string;
   convocado?: boolean;
   number?: string;
+  updated?: boolean;
 }

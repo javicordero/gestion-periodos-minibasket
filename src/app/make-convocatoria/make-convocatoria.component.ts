@@ -1,6 +1,6 @@
 import { PlayersService } from '../services/players.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Player } from '../models/models.model';
 import { FormControl } from '@angular/forms';
 import { AlertifyService } from '../services/alertify.service';
@@ -10,7 +10,7 @@ import { AlertifyService } from '../services/alertify.service';
   templateUrl: './make-convocatoria.component.html',
   styleUrls: ['./make-convocatoria.component.scss'],
 })
-export class MakeConvocatoriaComponent implements OnInit {
+export class MakeConvocatoriaComponent implements OnInit, OnDestroy {
   players: Player[] = [];
   playersConvocados: Player[] = [];
 
@@ -48,8 +48,9 @@ export class MakeConvocatoriaComponent implements OnInit {
         event.currentIndex
       );
 
-      const player = event.container.data[event.currentIndex];
-      this.playersService.convocarDesconvocarPlayer(player);
+      const player: Player = event.container.data[event.currentIndex];
+      player.convocado = !player.convocado;
+      player.updated = true;
     }
   }
 
@@ -70,6 +71,22 @@ export class MakeConvocatoriaComponent implements OnInit {
   changePlayerNumber(player: Player) {
     const value = (<HTMLInputElement>document.getElementById(`number-input-${player._id}`)).value;
 
-    this.playersService.changePlayerNumber(player, value);
+    player.number = value;
+    player.updated = true;
+  }
+
+  ngOnDestroy() {
+    this.players.map((player) => {
+      if (player.updated) {
+        this.playersService.updatePlayer(player);
+        player.updated = false;
+      }
+    });
+    this.playersConvocados.map((player) => {
+      if (player.updated) {
+        this.playersService.updatePlayer(player);
+        player.updated = false;
+      }
+    });
   }
 }
