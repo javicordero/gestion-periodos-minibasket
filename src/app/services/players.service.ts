@@ -8,24 +8,17 @@ import { AlertifyService } from './alertify.service';
   providedIn: 'root',
 })
 export class PlayersService {
-  constructor(
-    private http: HttpClient,
-    private alertifyService: AlertifyService
-  ) {}
+  constructor(private http: HttpClient, private alertifyService: AlertifyService) {}
 
-  public allPlayersSubject: BehaviorSubject<Player[]> = new BehaviorSubject(
-    [] as Player[]
-  );
+  public allPlayersSubject: BehaviorSubject<Player[]> = new BehaviorSubject([] as Player[]);
 
-  public readonly allPlayers$: Observable<Player[]> =
-    this.allPlayersSubject.asObservable();
+  public readonly allPlayers$: Observable<Player[]> = this.allPlayersSubject.asObservable();
 
   public updateAllPlayers(players: Player[]): void {
     this.allPlayersSubject.next(players);
   }
 
-  private playersConvocadosSubject: BehaviorSubject<Player[]> =
-    new BehaviorSubject([] as Player[]);
+  private playersConvocadosSubject: BehaviorSubject<Player[]> = new BehaviorSubject([] as Player[]);
 
   public readonly playersConvocados$: Observable<Player[]> =
     this.playersConvocadosSubject.asObservable();
@@ -64,11 +57,9 @@ export class PlayersService {
   }
 
   public updatePlayer(player: Player) {
-    this.http
-      .patch(`${this.url}/${player._id}`, player)
-      .subscribe((data: any) => {
-        this.getPlayers();
-      });
+    this.http.patch(`${this.url}/${player._id}`, player).subscribe((data: any) => {
+      this.getPlayers();
+    });
   }
 
   public changePlayerNumber(player: Player, number: string): void {

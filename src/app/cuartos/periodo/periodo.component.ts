@@ -1,8 +1,4 @@
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit } from '@angular/core';
 import { Game, Period, Player } from 'src/app/models/models.model';
 import { GameService } from 'src/app/services/game.service';
@@ -62,8 +58,7 @@ export class PeriodoComponent implements OnInit {
     this.gameService.game$.subscribe((game) => {
       this.game = game;
       this.selectedPlayersControl.setValue(
-        this.game.periods.find((period) => period.id === this.periodNumber)!
-          .players
+        this.game.periods.find((period) => period.id === this.periodNumber)!.players
       );
       this.playersSelected = this.selectedPlayersControl.value;
     });
@@ -71,59 +66,41 @@ export class PeriodoComponent implements OnInit {
 
   drop(event: CdkDragDrop<Player[]>) {
     if (event.previousContainer === event.container) {
-      moveItemInArray(
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       return;
     }
 
-    let previousPeriodId: number = parseInt(
-      event.previousContainer.id.slice(-1)
-    );
+    let previousPeriodId: number = parseInt(event.previousContainer.id.slice(-1));
     let nextPeriodId: number = parseInt(event.container.id.slice(-1));
 
-    let previousPlayer: Player = this.game.periods.find(
-      (period) => period.id === previousPeriodId
-    )!.players[event.previousIndex];
-    let nextPlayer =
-      this.game.periods[nextPeriodId - 1].players[event.currentIndex];
+    let previousPlayer: Player = this.game.periods.find((period) => period.id === previousPeriodId)!
+      .players[event.previousIndex];
+    let nextPlayer = this.game.periods[nextPeriodId - 1].players[event.currentIndex];
     console.log('aa');
     if (
       this.gameService.playerExistsInPeriod(nextPeriodId, previousPlayer) ||
-      (nextPlayer &&
-        this.gameService.playerExistsInPeriod(previousPeriodId, nextPlayer))
+      (nextPlayer && this.gameService.playerExistsInPeriod(previousPeriodId, nextPlayer))
     ) {
       this.alertifyService.error('El jugador ya existe en este periodo');
       return;
     }
     if (
       !nextPlayer &&
-      this.game.periods.find((period) => period.id === nextPeriodId)!.players
-        .length >= 5
+      this.game.periods.find((period) => period.id === nextPeriodId)!.players.length >= 5
     ) {
       this.alertifyService.error('El periodo ya está lleno');
       return;
     }
 
     // Coge el del primero y lo mete al segundo
-    this.gameService.addPlayerToPeriod(
-      nextPeriodId,
-      previousPlayer,
-      event.currentIndex
-    );
+    this.gameService.addPlayerToPeriod(nextPeriodId, previousPlayer, event.currentIndex);
     if (nextPlayer) {
       this.gameService.deletePlayerFromPeriod(nextPeriodId, nextPlayer);
     }
 
     // Coge al del segundo y lo mete al prinmero
     if (nextPlayer) {
-      this.gameService.addPlayerToPeriod(
-        previousPeriodId,
-        nextPlayer,
-        event.previousIndex
-      );
+      this.gameService.addPlayerToPeriod(previousPeriodId, nextPlayer, event.previousIndex);
     }
     this.gameService.deletePlayerFromPeriod(previousPeriodId, previousPlayer);
   }
@@ -159,9 +136,7 @@ export class PeriodoComponent implements OnInit {
   }
 
   getPlayerNumber(playerId: string | undefined) {
-    const list: Player[] = this.dropdownList.filter(
-      (player) => player._id === playerId
-    );
+    const list: Player[] = this.dropdownList.filter((player) => player._id === playerId);
     return list[0].number;
   }
 }

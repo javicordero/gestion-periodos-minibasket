@@ -8,13 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [MakeConvocatoriaComponent],
-  imports: [
-    CommonModule,
-    DragDropModule,
-    ReactiveFormsModule,
-    FormsModule,
-    MatIconModule,
-  ],
+  imports: [CommonModule, DragDropModule, ReactiveFormsModule, FormsModule, MatIconModule],
   exports: [MakeConvocatoriaComponent],
 })
 export class MakeConvocatoriaModule {}

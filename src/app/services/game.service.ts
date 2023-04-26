@@ -38,14 +38,7 @@ export class GameService {
 
   game: Game = {
     id: 'game1',
-    periods: [
-      this.period1,
-      this.period2,
-      this.period3,
-      this.period4,
-      this.period5,
-      this.period6,
-    ],
+    periods: [this.period1, this.period2, this.period3, this.period4, this.period5, this.period6],
   };
 
   private gameSubject: BehaviorSubject<Game> = new BehaviorSubject(this.game);
@@ -59,9 +52,7 @@ export class GameService {
   }
 
   public deletePlayerFromPeriod(periodId: number, player: Player) {
-    this.gameSubject
-      .getValue()
-      .periods.find((period: Period) => period.id === periodId)!.players =
+    this.gameSubject.getValue().periods.find((period: Period) => period.id === periodId)!.players =
       this.gameSubject.value.periods
         .find((period: Period) => period.id === periodId)!
         .players.filter((p) => p._id !== player._id);
@@ -70,9 +61,9 @@ export class GameService {
 
   public addPlayerToPeriod(periodId: number, player: Player, order?: number) {
     if (order !== undefined) {
-      this.gameSubject.value.periods.filter(
-        (period: Period) => period.id === periodId
-      )[0].players[order] = player;
+      this.gameSubject.value.periods.filter((period: Period) => period.id === periodId)[0].players[
+        order
+      ] = player;
     } else {
       this.gameSubject.value.periods
         .filter((period: Period) => period.id === periodId)[0]

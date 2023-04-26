@@ -8,9 +8,8 @@ describe('ConvocadosListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ConvocadosListComponent ]
-    })
-    .compileComponents();
+      declarations: [ConvocadosListComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ConvocadosListComponent);
     component = fixture.componentInstance;
