@@ -5,6 +5,7 @@ import { Player } from '../models/models.model';
 import { FormControl } from '@angular/forms';
 import { AlertifyService } from '../services/alertify.service';
 import { ReplaySubject, takeUntil } from 'rxjs';
+import { GameService } from '../services/game.service';
 
 @Component({
   selector: 'app-make-convocatoria',
@@ -17,7 +18,11 @@ export class MakeConvocatoriaComponent implements OnInit, OnDestroy {
 
   newPlayer: FormControl = new FormControl('');
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
-  constructor(private playersService: PlayersService, private alertifyService: AlertifyService) {}
+  constructor(
+    private playersService: PlayersService,
+    private alertifyService: AlertifyService,
+    private gameService: GameService
+  ) {}
 
   ngOnInit(): void {
     this.playersService.allPlayers$.pipe(takeUntil(this.destroyed$)).subscribe((allPlayers) => {
@@ -74,10 +79,21 @@ export class MakeConvocatoriaComponent implements OnInit, OnDestroy {
     player.updated = true;
   }
 
+  ifPlayerNotConvocadoDeleteHimFromGame(player: Player) {
+    this.gameService.game$.pipe(takeUntil(this.destroyed$)).subscribe((game) => {
+      game.periods.map((period) => {
+        if (this.gameService.playerExistsInPeriod(period.id, player)) {
+          this.gameService.deletePlayerFromPeriod(period.id, player);
+        }
+      });
+    });
+  }
+
   ngOnDestroy() {
     this.players.map((player) => {
       if (player.updated) {
         this.playersService.updatePlayer(player);
+        this.ifPlayerNotConvocadoDeleteHimFromGame(player); // Si el jugador no está convocado, lo borramos de los períodos
         player.updated = false;
       }
     });
