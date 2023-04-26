@@ -1,16 +1,17 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Game, Player } from 'src/app/models/models.model';
 import { GameService } from 'src/app/services/game.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { FormControl } from '@angular/forms';
 import { AlertifyService } from 'src/app/services/alertify.service';
+import { ReplaySubject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-periodo',
   templateUrl: './periodo.component.html',
   styleUrls: ['./periodo.component.scss'],
 })
-export class PeriodoComponent implements OnInit {
+export class PeriodoComponent implements OnInit, OnDestroy {
   @Input() periodNumber: number = 0;
   @Input() players: Player[] = [];
   game: Game = {
@@ -25,6 +26,8 @@ export class PeriodoComponent implements OnInit {
 
   playersSelected: Player[] = [];
   selectedPlayersControl: FormControl = new FormControl<Player | null>(null);
+
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
 
   constructor(private gameService: GameService, private alertifyService: AlertifyService) {
     this.dropdownSettings = {
@@ -49,7 +52,7 @@ export class PeriodoComponent implements OnInit {
     Object.assign(this.dropdownList, this.players);
     this.dropdownList.sort(this.orderAlfabetico);
 
-    this.gameService.game$.subscribe((game) => {
+    this.gameService.game$.pipe(takeUntil(this.destroyed$)).subscribe((game) => {
       this.game = game;
       this.selectedPlayersControl.setValue(
         this.game.periods.find((period) => period.id === this.periodNumber)!.players
@@ -131,5 +134,10 @@ export class PeriodoComponent implements OnInit {
   getPlayerNumber(playerId: string | undefined) {
     const list: Player[] = this.dropdownList.filter((player) => player._id === playerId);
     return list[0].number;
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 }
