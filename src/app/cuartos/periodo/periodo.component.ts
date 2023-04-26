@@ -50,8 +50,8 @@ export class PeriodoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.playersService.playersConvocados$.subscribe((players) => {
-      this.dropdownList = players;
+    this.playersService.allPlayers$.subscribe((players) => {
+      this.dropdownList = players.filter((player) => player.convocado);
       this.dropdownList.sort(this.orderAlfabetico);
     });
 

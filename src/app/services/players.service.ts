@@ -18,22 +18,13 @@ export class PlayersService {
     this.allPlayersSubject.next(players);
   }
 
-  private playersConvocadosSubject: BehaviorSubject<Player[]> = new BehaviorSubject([] as Player[]);
-
-  public readonly playersConvocados$: Observable<Player[]> =
-    this.playersConvocadosSubject.asObservable();
-
-  public updatePlayersConvocados(players: Player[]): void {
-    this.playersConvocadosSubject.next(players);
-  }
-
-  // url: string = 'http://localhost:3000/api/v1/players';
-  url: string = 'https://vast-snaps-tuna.cyclic.app/api/v1/players';
+  url: string = 'http://localhost:3000/api/v1/players';
+  // url: string = 'https://vast-snaps-tuna.cyclic.app/api/v1/players';
 
   public getPlayers() {
     this.http.get<Player[]>(`${this.url}/`, {}).subscribe({
       next: (data: any) => {
-        this.allPlayersSubject.next(data);
+        this.allPlayersSubject.next(data.sort((a: any, b: any) => a.number - b.number));
       },
     });
   }
@@ -62,7 +53,7 @@ export class PlayersService {
     });
   }
 
-  public changePlayerNumber(player: Player, number: string): void {
+  public changePlayerNumber(player: Player, number: number): void {
     player.number = number;
     this.updatePlayer(player);
   }

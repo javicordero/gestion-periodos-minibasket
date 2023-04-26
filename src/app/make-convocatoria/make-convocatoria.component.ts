@@ -4,6 +4,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Player } from '../models/models.model';
 import { FormControl } from '@angular/forms';
 import { AlertifyService } from '../services/alertify.service';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-make-convocatoria',
@@ -15,14 +16,13 @@ export class MakeConvocatoriaComponent implements OnInit, OnDestroy {
   playersConvocados: Player[] = [];
 
   newPlayer: FormControl = new FormControl('');
-
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   constructor(private playersService: PlayersService, private alertifyService: AlertifyService) {}
 
   ngOnInit(): void {
-    this.playersService.allPlayers$.subscribe((allPlayers) => {
-      this.players = allPlayers.filter((player) => player.convocado === false);
-      this.playersConvocados = allPlayers.filter((player) => player.convocado === true);
-      this.playersService.updatePlayersConvocados(this.playersConvocados);
+    this.playersService.allPlayers$.pipe(takeUntil(this.destroyed$)).subscribe((allPlayers) => {
+      this.players = allPlayers.filter((player) => !player.convocado);
+      this.playersConvocados = allPlayers.filter((player) => player.convocado);
     });
   }
 
@@ -30,7 +30,7 @@ export class MakeConvocatoriaComponent implements OnInit, OnDestroy {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      if (event.container.id !== 'cdk-drop-list-0' && this.playersConvocados.length >= 12) {
+      if (event.container.id !== 'player-list-0' && this.playersConvocados.length >= 12) {
         this.alertifyService.error('Máximo de 12 jugadores');
         return;
       }
@@ -70,8 +70,7 @@ export class MakeConvocatoriaComponent implements OnInit, OnDestroy {
 
   changePlayerNumber(player: Player) {
     const value = (<HTMLInputElement>document.getElementById(`number-input-${player._id}`)).value;
-
-    player.number = value;
+    player.number = parseInt(value);
     player.updated = true;
   }
 
@@ -88,5 +87,8 @@ export class MakeConvocatoriaComponent implements OnInit, OnDestroy {
         player.updated = false;
       }
     });
+
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 }

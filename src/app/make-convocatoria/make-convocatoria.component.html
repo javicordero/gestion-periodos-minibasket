@@ -9,6 +9,7 @@
       [cdkDropListData]="players"
       [cdkDropListConnectedTo]="[playersConvocadosList]"
       class="player-list"
+      id="player-list-0"
       (cdkDropListDropped)="drop($event)"
     >
       <div class="player-box" *ngFor="let player of players" cdkDrag>
@@ -55,6 +56,7 @@
       [cdkDropListData]="playersConvocados"
       [cdkDropListConnectedTo]="[allPlayersList]"
       class="player-list"
+      id="player-list-1"
       (cdkDropListDropped)="drop($event)"
     >
       <p class="player-box-label" *ngIf="playersConvocados.length === 0">
