@@ -1,8 +1,7 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit } from '@angular/core';
-import { Game, Period, Player } from 'src/app/models/models.model';
+import { Game, Player } from 'src/app/models/models.model';
 import { GameService } from 'src/app/services/game.service';
-import { PlayersService } from 'src/app/services/players.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { FormControl } from '@angular/forms';
 import { AlertifyService } from 'src/app/services/alertify.service';
@@ -13,6 +12,7 @@ import { AlertifyService } from 'src/app/services/alertify.service';
 })
 export class PeriodoComponent implements OnInit {
   @Input() periodNumber: number = 0;
+  @Input() players: Player[] = [];
   game: Game = {
     id: '',
     periods: [],
@@ -26,11 +26,7 @@ export class PeriodoComponent implements OnInit {
   playersSelected: Player[] = [];
   selectedPlayersControl: FormControl = new FormControl<Player | null>(null);
 
-  constructor(
-    private playersService: PlayersService,
-    private gameService: GameService,
-    private alertifyService: AlertifyService
-  ) {
+  constructor(private gameService: GameService, private alertifyService: AlertifyService) {
     this.dropdownSettings = {
       singleSelection: false,
       enableCheckAll: false,
@@ -50,10 +46,8 @@ export class PeriodoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.playersService.allPlayers$.subscribe((players) => {
-      this.dropdownList = players.filter((player) => player.convocado);
-      this.dropdownList.sort(this.orderAlfabetico);
-    });
+    Object.assign(this.dropdownList, this.players);
+    this.dropdownList.sort(this.orderAlfabetico);
 
     this.gameService.game$.subscribe((game) => {
       this.game = game;
@@ -76,7 +70,6 @@ export class PeriodoComponent implements OnInit {
     let previousPlayer: Player = this.game.periods.find((period) => period.id === previousPeriodId)!
       .players[event.previousIndex];
     let nextPlayer = this.game.periods[nextPeriodId - 1].players[event.currentIndex];
-    console.log('aa');
     if (
       this.gameService.playerExistsInPeriod(nextPeriodId, previousPlayer) ||
       (nextPlayer && this.gameService.playerExistsInPeriod(previousPeriodId, nextPlayer))

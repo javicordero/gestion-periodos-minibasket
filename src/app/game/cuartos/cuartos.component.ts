@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Player } from 'src/app/models/models.model';
 
 @Component({
   selector: 'app-cuartos',
@@ -7,4 +8,5 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CuartosComponent implements OnInit {
   ngOnInit(): void {}
+  @Input() players: Player[] = [];
 }

@@ -6,8 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MakeConvocatoriaModule } from './make-convocatoria/make-convocatoria.module';
-import { CuartosModule } from './cuartos/cuartos.module';
-import { ConvocadosListComponent } from './convocados-list/convocados-list.component';
 import { OpenColoseConvocatoriaButtonComponent } from './open-close-convocatoria-button/open-close-convocatoria-button.component';
 import { FooterComponent } from './footer/footer.component';
 
@@ -16,11 +14,11 @@ import { HeaderModule } from './header/header.module';
 import { LoadingInterceptor } from './loading.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { GameModule } from './game/game.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ConvocadosListComponent,
     OpenColoseConvocatoriaButtonComponent,
     FooterComponent,
     SpinnerComponent,
@@ -30,7 +28,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MakeConvocatoriaModule,
-    CuartosModule,
+    GameModule,
     HttpClientModule,
     FontAwesomeModule,
     HeaderModule,

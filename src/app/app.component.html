@@ -5,8 +5,7 @@
   </header>
   <main class="wrapper-margin">
     <app-make-convocatoria *ngIf="convocatoriaOpen"></app-make-convocatoria>
-    <app-convocados-list *ngIf="!convocatoriaOpen"></app-convocados-list>
-    <app-cuartos *ngIf="!convocatoriaOpen"></app-cuartos>
+    <app-game *ngIf="!convocatoriaOpen"></app-game>
   </main>
   <footer>
     <app-footer></app-footer>
